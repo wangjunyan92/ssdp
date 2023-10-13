@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 import socket
 import select
 import ssdp_server
@@ -31,14 +28,16 @@ class SSDPClient():
                 conn.handle_request()
                 if conn.is_find_service:
                     break
-                else:  # timeout
-                    self.__send_search()
-                    self.__s.close()
+            else:  # timeout
+                self.__send_search()
+                self.__s.close()
+                break
 
     def __send_search(self):
-        print "Sending M-SEARCH..."
+        print("Sending M-SEARCH...")
         # INFO: 发送到SSDP组播地址上
-        self.__s.sendto(MS, (SSDP_ADDR, SSDP_PORT))
+        self.__s.sendto(MS.encode(), (SSDP_ADDR, SSDP_PORT))
+
 
 if __name__ == '__main__':
     port = SSDPClient()
